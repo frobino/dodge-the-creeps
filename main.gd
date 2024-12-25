@@ -7,7 +7,7 @@ var score
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# Uncomment the following line to test the game
+	# Uncomment the following line to test the game (before HUD was inserted)
 	# new_game()
 	pass
 
@@ -20,12 +20,15 @@ func _process(delta: float) -> void:
 func game_over() -> void:
 	$ScoreTimer.stop()
 	$MobTimer.stop()
+	$HUD.show_game_over()
 
+# Start new game, triggered by HUD start_game signal
 func new_game():
 	score = 0
 	$Player.start($StartPosition.position)
 	$StartTimer.start()
-
+	$HUD.update_score(score)
+	$HUD.show_message("Get Ready")
 
 func _on_start_timer_timeout() -> void:
 	# Starts the other 2 timers
@@ -34,6 +37,7 @@ func _on_start_timer_timeout() -> void:
 
 func _on_score_timer_timeout() -> void:
 	score += 1
+	$HUD.update_score(score)
 
 func _on_mob_timer_timeout() -> void:
 	# Create a mob instance, pick a random starting location along the Path2D, and set the mob in motion
