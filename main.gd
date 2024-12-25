@@ -21,6 +21,8 @@ func game_over() -> void:
 	$ScoreTimer.stop()
 	$MobTimer.stop()
 	$HUD.show_game_over()
+	$Music.stop()
+	$DeathSound.play()
 
 # Start new game, triggered by HUD start_game signal
 func new_game():
@@ -31,6 +33,7 @@ func new_game():
 	$HUD.show_message("Get Ready")
 	# Remove all remaining mobs from the previus game session
 	get_tree().call_group("mobs", "queue_free")
+	$Music.play()
 
 func _on_start_timer_timeout() -> void:
 	# Starts the other 2 timers
